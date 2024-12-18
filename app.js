@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
 const { errors } = require("celebrate");
-const { errorHandler } = require("./middlewares/error-handler");
+const errorHandler = require("./middlewares/error-handler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const indexRouter = require("./routes/index");
 
@@ -26,7 +26,7 @@ app.use(requestLogger);
 app.use("/", indexRouter);
 app.use(errorLogger);
 app.use(errors());
-app.use("/", errorHandler);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
