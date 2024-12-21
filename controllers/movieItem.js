@@ -4,16 +4,16 @@ const { NotFoundError } = require("../errors/NotFoundError");
 
 // Save movie logic
 const saveMovie = (req, res, next) => {
-  const { imbdId } = req.params;
+  const { imdbID } = req.params;
 
-  if (!imbdId) {
+  if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
 
   MovieItem.findByIdAndUpdate(
-    imbdId,
+    imdbID,
     {
-      $addToSet: { likes: req.user._id },
+      $addToSet: { saves: req.user._id },
     },
     { new: true }
   )
@@ -32,14 +32,14 @@ const saveMovie = (req, res, next) => {
 
 // Unsave movie logic
 const unsaveMovie = (req, res, next) => {
-  const { imbdId } = req.params;
-  if (!imbdId) {
+  const { imdbID } = req.params;
+  if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
 
   MovieItem.findByIdAndUpdate(
-    imbdId,
-    { $pull: { likes: req.user._id } },
+    imdbID,
+    { $pull: { saves: req.user._id } },
     {
       new: true,
     }

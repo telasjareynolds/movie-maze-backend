@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const userRouter = require("./users");
 const movieItemRouter = require("./movieItems");
-const { NotFoundError } = require("../errors/NotFoundError")
+const { NotFoundError } = require("../errors/NotFoundError");
 
 router.use("/", userRouter);
-router.use("/movies/:imbdId/save", movieItemRouter);
+router.use("/", movieItemRouter);
 
 router.use(() => {
   throw new NotFoundError(

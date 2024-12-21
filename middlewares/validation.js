@@ -13,7 +13,7 @@ const validateUserCreation = celebrate({
       "string.empty": "Email is required.",
     }),
     password: Joi.string().required().min(8).messages({
-      "string.min": 'The minimum length of the "password" field is 2',
+      "string.min": 'The minimum length of the "password" field is 8',
       "string.max": 'The maximum length of the "password" field is 30',
       "string.empty": 'The "password" field must be filled in',
     }),
@@ -37,9 +37,8 @@ const validateLoginAuth = celebrate({
 
 const validateId = celebrate({
   params: Joi.object().keys({
-    itemId: Joi.string().length(24).hex().messages({
-      "string.length": "The ID must be exactly 24 characters long",
-      "string.hex": "The ID must be a valid hexadecimal value",
+    imdbID: Joi.string().required().messages({
+      "string.empty": 'The "imdbID" field must be filled in',
     }),
   }),
 });

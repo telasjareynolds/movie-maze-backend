@@ -6,7 +6,7 @@ const movieItemSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  save: [
+  saves: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
