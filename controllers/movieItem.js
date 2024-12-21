@@ -5,22 +5,26 @@ const { NotFoundError } = require("../errors/NotFoundError");
 // Save movie logic
 const saveMovie = (req, res, next) => {
   const { imdbID } = req.params;
+  console.log(typeof imdbID === "string");
 
   if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
-
-  MovieItem.findByIdAndUpdate(
-    imdbID,
+  
+  MovieItem.findOneAndUpdate(
+    { imdbID },
     {
       $addToSet: { saves: req.user._id },
     },
     { new: true }
   )
-    .orFail(() => {
-      throw new NotFoundError("Movie ID not found");
+    // .orFail(() => {
+    //   throw new NotFoundError("Movie ID not found");
+    // })
+    .then((item) => {
+      console.log("HERE IS THE ITEM", item);
+      res.json(item);
     })
-    .then((item) => res.send(item))
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Id in incorrect format"));
