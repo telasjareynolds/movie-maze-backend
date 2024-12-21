@@ -5,7 +5,6 @@ const { NotFoundError } = require("../errors/NotFoundError");
 // Save movie logic
 const saveMovie = (req, res, next) => {
   const { imdbID } = req.params;
-  console.log(typeof imdbID === "string");
 
   if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
@@ -41,8 +40,8 @@ const unsaveMovie = (req, res, next) => {
     throw new BadRequestError("Movie ID is required");
   }
 
-  MovieItem.findByIdAndUpdate(
-    imdbID,
+  MovieItem.findOneAndUpdate(
+    { imdbID },
     { $pull: { saves: req.user._id } },
     {
       new: true,
