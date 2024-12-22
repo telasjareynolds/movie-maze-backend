@@ -33,6 +33,8 @@ const unsaveMovie = (req, res, next) => {
   const { imdbID } = req.params;
   const userId = req.user._id;
 
+  console.log(imdbID);
+  console.log(userId);
   if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
