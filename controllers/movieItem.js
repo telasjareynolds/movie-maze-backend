@@ -1,6 +1,6 @@
 const MovieItem = require("../models/movieItem");
 const { BadRequestError } = require("../errors/BadRequestError");
-const { NotFoundError } = require("../errors/BadRequestError");
+const { NotFoundError } = require("../errors/NotFoundError");
 
 // Save movie logic
 const saveMovie = (req, res, next) => {
