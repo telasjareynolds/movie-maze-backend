@@ -4,24 +4,15 @@ const { NotFoundError } = require("../errors/NotFoundError");
 
 // Save movie logic
 const saveMovie = (req, res, next) => {
-  const { imdbID } = req.params;
+  const { imdbID } = req.body;
+  const owner = req.user._id;
 
   if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
-  
-  MovieItem.findOneAndUpdate(
-    { imdbID },
-    {
-      $addToSet: { saves: req.user._id },
-    },
-    { new: true }
-  )
-    // .orFail(() => {
-    //   throw new NotFoundError("Movie ID not found");
-    // })
+
+  MovieItem.create({ imdbID, owner })
     .then((item) => {
-      console.log("HERE IS THE ITEM", item);
       res.json(item);
     })
     .catch((err) => {
@@ -35,22 +26,20 @@ const saveMovie = (req, res, next) => {
 
 // Unsave movie logic
 const unsaveMovie = (req, res, next) => {
-  const { imdbID } = req.params;
+  const { imdbID } = req.body;
+  const userId = req.user._id;
+
   if (!imdbID) {
     throw new BadRequestError("Movie ID is required");
   }
 
-  MovieItem.findOneAndUpdate(
-    { imdbID },
-    { $pull: { saves: req.user._id } },
-    {
-      new: true,
-    }
-  )
-    .orFail(() => {
-      throw new NotFoundError("Movie ID not found");
+  MovieItem.findOne({ imdbID })
+    .then((item) => {
+      if (item.owner.toString() !== userId) {
+        throw new ForbiddenError("Not authorized to unsave item");
+      }
+      return MovieItem.delete({ imdbID });
     })
-    .then((item) => res.send(item))
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Id in incorrect format"));

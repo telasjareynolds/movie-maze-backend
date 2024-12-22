@@ -11,12 +11,6 @@ const movieItemSchema = new mongoose.Schema({
     ref: "user",
     required: true,
   },
-  saves: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-    },
-  ],
 });
 
 module.exports = mongoose.model("MovieItem", movieItemSchema);
