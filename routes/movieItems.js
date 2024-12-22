@@ -4,9 +4,9 @@ const { validateId } = require("../middlewares/validation");
 const auth = require("../middlewares/auth");
 
 // route for saving movie
-router.post("/", validateId, auth, saveMovie);
+router.post("/", auth, saveMovie);
 
 // route for unsaving movie
-router.delete("/:itemId", validateId, auth, unsaveMovie);
+router.delete("/:imdbID", validateId, auth, unsaveMovie);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const movieItemRouter = require("./movieItems");
 const { NotFoundError } = require("../errors/NotFoundError");
 
 router.use("/", userRouter);
-router.use("/", movieItemRouter);
+router.use("/movies", movieItemRouter);
 
 router.use(() => {
   throw new NotFoundError(
