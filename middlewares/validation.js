@@ -54,6 +54,9 @@ const validateId = celebrate({
 // Validate movie data
 const validateMovieData = celebrate({
   body: Joi.object().keys({
+    imdbID: Joi.string().required().messages({
+      "string.empty": 'The "imdbID" field must be filled in',
+    }),
     title: Joi.string().required().min(2).messages({
       "string.min": 'The minimum length of the "title" field is 2',
       "string.empty": 'The "name" field must be filled in',
@@ -65,7 +68,7 @@ const validateMovieData = celebrate({
     year: Joi.string().required().messages({
       "string.empty": 'The "year" field must be filled in',
       "string.min": 'The minimum length of the "title" field is 2',
-    })
+    }),
   }),
 });
 
@@ -73,5 +76,5 @@ module.exports = {
   validateUserCreation,
   validateLoginAuth,
   validateId,
-  validateMovieData
+  validateMovieData,
 };
