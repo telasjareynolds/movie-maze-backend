@@ -32,5 +32,14 @@
     "i": "^0.3.7",
     "nodemon": "^3.1.9",
     "prettier": "^2.8.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "movie-maze-backend"
+  },
+  "keywords": [
+    "movie",
+    "watchlist",
+    "creator"
+  ]
 }
