@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
 const helmet = require("helmet");
 const cors = require("cors");
 const { errors } = require("celebrate");
@@ -12,9 +13,9 @@ const { PORT = 3001 } = process.env;
 
 app.use(
   cors({
-    origin: "http://localhost:3000", 
-    methods: ["GET", "POST", "PUT", "DELETE"], 
-    allowedHeaders: ["Content-Type", "Authorization"], 
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(helmet());

@@ -6,6 +6,7 @@ const { BadRequestError } = require("../errors/BadRequestError");
 const { SUCCESSFUL_REQUEST } = require("../utils/SuccessfulRequest");
 const { UnauthorizedError } = require("../errors/UnauthorizedError");
 const { NotFoundError } = require("../errors/NotFoundError");
+const { ConflictError } = require("../errors/ConflictError");
 
 // create 3 controllers for getUser, createUser, and sign in
 const createUser = (req, res, next) => {
@@ -20,9 +21,15 @@ const createUser = (req, res, next) => {
     .then(() =>
       res.status(SUCCESSFUL_REQUEST).send({ message: "User created" })
     )
-    .catch((err) =>
-      res.status(500).send({ message: "Error creating user:", err })
-    );
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(new BadRequestError("Invalid user data"));
+      } else if (err.code === 11000) {
+        next(new ConflictError("User with this email already exists"));
+      } else {
+        next(err);
+      }
+    });
 };
 
 // log in the user

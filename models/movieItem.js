@@ -15,7 +15,6 @@ const movieItemSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
   },
   poster: {
     type: String,
@@ -28,8 +27,9 @@ const movieItemSchema = new mongoose.Schema({
     },
   },
   year: {
-    type: Number,
+    type: String,
     required: true,
+    minlength: 2,
   },
 });
 

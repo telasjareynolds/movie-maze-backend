@@ -48,7 +48,7 @@ const unsaveMovie = (req, res, next) => {
     throw new BadRequestError("Movie ID is required");
   }
 
-  MovieItem.findOne({ imdbID, owner: userId })
+  MovieItem.findOne({ imdbID })
     .then((item) => {
       if (!item) {
         throw new NotFoundError("Movie not found or not saved by this user");
