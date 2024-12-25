@@ -2,15 +2,23 @@
   "name": "movie-maze-backend",
   "version": "1.0.0",
   "description": "Backend of movie maze",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://  github.com/telasjareynolds/movie-maze-backend.git"
+  },
   "author": "Telasja Reynolds",
   "license": "ISC",
+  "bugs": {
+    "url": "https://  github.com/telasjareynolds/movie-maze-backend/issues"
+  },
+  "homepage": "https://  github.com/telasjareynolds/movie-maze-backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "celebrate": "^15.0.3",
@@ -32,10 +40,6 @@
     "i": "^0.3.7",
     "nodemon": "^3.1.9",
     "prettier": "^2.8.8"
-  },
-  "repository": {
-    "type": "git",
-    "url": "movie-maze-backend"
   },
   "keywords": [
     "movie",
