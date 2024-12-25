@@ -3,13 +3,12 @@ const {
   saveMovie,
   unsaveMovie,
   getSavedMovies,
-  validateMovieData
 } = require("../controllers/movieItem");
-const { validateId } = require("../middlewares/validation");
+const { validateId, validateMovieData } = require("../middlewares/validation");
 const auth = require("../middlewares/auth");
 
 // route for getting saved movies
-router.get("/", auth, validateMovieData, getSavedMovies);
+router.get("/", auth, getSavedMovies);
 
 // route for saving movie
 router.post("/", auth, validateMovieData, saveMovie);
