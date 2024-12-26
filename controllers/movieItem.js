@@ -1,7 +1,6 @@
 const MovieItem = require("../models/movieItem");
 const { BadRequestError } = require("../errors/BadRequestError");
 const { NotFoundError } = require("../errors/NotFoundError");
-const { ForbiddenError } = require("../errors/ForbiddenError");
 
 // Get saved movie items for watchlist
 const getSavedMovies = (req, res, next) => {
