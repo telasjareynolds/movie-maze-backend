@@ -33,4 +33,6 @@ const movieItemSchema = new mongoose.Schema({
   },
 });
 
+movieItemSchema.index({ imdbID: 1, owner: 1 }, { unique: true });
+
 module.exports = mongoose.model("MovieItem", movieItemSchema);
