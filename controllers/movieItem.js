@@ -48,13 +48,10 @@ const unsaveMovie = (req, res, next) => {
     throw new BadRequestError("Movie ID is required");
   }
 
-  MovieItem.findOne({ imdbID })
+  MovieItem.findOne({ imdbID, owner: userId })
     .then((item) => {
       if (!item) {
         throw new NotFoundError("Movie not found or not saved by this user");
-      }
-      if (item.owner.toString() !== userId) {
-        throw new ForbiddenError("Not authorized to unsave item");
       }
 
       return MovieItem.findOneAndDelete({ imdbID, owner: userId }).then(() =>
