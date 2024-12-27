@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require('dotenv').config();
+require("dotenv").config();
 const helmet = require("helmet");
 const cors = require("cors");
 const { errors } = require("celebrate");
@@ -13,7 +13,7 @@ const { PORT = 3001 } = process.env;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://movie-maze.twilightparadox.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
