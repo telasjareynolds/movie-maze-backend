@@ -6,10 +6,14 @@ const cors = require("cors");
 const { errors } = require("celebrate");
 const errorHandler = require("./middlewares/error-handler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { DB_URL } = require("./utils/config");
+const { limiter } = require("./middlewares/rateLimiter");
 const indexRouter = require("./routes/index");
 
 const app = express();
 const { PORT = 3001 } = process.env;
+
+app.use(limiter);
 
 app.use(
   cors({
@@ -22,7 +26,7 @@ app.use(helmet());
 
 mongoose.set("strictQuery", false);
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/movie-maze_db",
+  DB_URL,
   () => {
     console.log("connected to DB");
   },

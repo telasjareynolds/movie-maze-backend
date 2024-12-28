@@ -3,29 +3,37 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
 const { BadRequestError } = require("../errors/BadRequestError");
-const { SUCCESSFUL_REQUEST } = require("../utils/SuccessfulRequest");
 const { UnauthorizedError } = require("../errors/UnauthorizedError");
 const { NotFoundError } = require("../errors/NotFoundError");
 const { ConflictError } = require("../errors/ConflictError");
+const {
+  INVALID_BADREQUEST_MSG,
+  ID_BADREQUEST_MSG,
+  SUCCESSFUL_REQUEST_MSG,
+  SUCCESSFUL_REQUEST,
+  CONTFLICT_ERROR_MSG,
+  UNAUTHORIZED_ERROR_MSG,
+  NOTFOUND_ERROR_MSG
+} = require("../utils/constants");
 
 // create 3 controllers for getUser, createUser, and sign in
 const createUser = (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!email || !password) {
-    throw new BadRequestError("Email or password not valid");
+    throw new BadRequestError(INVALID_BADREQUEST_MSG);
   }
   User.findOne({ email })
     .then(() => bcrypt.hash(password, 10))
     .then((hash) => User.create({ username, email, password: hash }))
     .then(() =>
-      res.status(SUCCESSFUL_REQUEST).send({ message: "User created" })
+      res.status(SUCCESSFUL_REQUEST).send(SUCCESSFUL_REQUEST_MSG)
     )
     .catch((err) => {
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid user data"));
+        next(new BadRequestError(INVALID_BADREQUEST_MSG));
       } else if (err.code === 11000) {
-        next(new ConflictError("User with this email already exists"));
+        next(new ConflictError(CONTFLICT_ERROR_MSG));
       } else {
         next(err);
       }
@@ -37,7 +45,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw new BadRequestError("Email or password not valid");
+    throw new BadRequestError(INVALID_BADREQUEST_MSG);
   }
 
   return User.findUserByCredentials(email, password)
@@ -56,9 +64,9 @@ const login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "UnauthorizedError") {
-        next(new UnauthorizedError("Incorrect email or password"));
+        next(new UnauthorizedError(UNAUTHORIZED_ERROR_MSG));
       } else if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid input data"));
+        next(new BadRequestError(INVALID_BADREQUEST_MSG));
       } else {
         next(err);
       }
@@ -71,11 +79,11 @@ const getCurrentUser = (req, res, next) => {
 
   User.findById(userId)
     .orFail(() => {
-      throw new NotFoundError("Current user not found.");
+      throw new NotFoundError(NOTFOUND_ERROR_MSG);
     })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("No user with matching ID found");
+        throw new NotFoundError(NOTFOUND_ERROR_MSG);
       }
       res.send({
         user: {
@@ -87,7 +95,7 @@ const getCurrentUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("The id string is in an invalid format"));
+        next(new BadRequestError(ID_BADREQUEST_MSG));
       } else {
         next(err);
       }

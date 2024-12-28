@@ -1,6 +1,10 @@
 const MovieItem = require("../models/movieItem");
 const { BadRequestError } = require("../errors/BadRequestError");
-const { NotFoundError } = require("../errors/NotFoundError");
+const { ForbiddenError } = require("../errors/ForbiddenError");
+const {
+  ID_BADREQUEST_MSG,
+  FORBIDDEN_ERROR_MSG,
+} = require("../utils/constants");
 
 // Get saved movie items for watchlist
 const getSavedMovies = (req, res, next) => {
@@ -19,7 +23,7 @@ const saveMovie = (req, res, next) => {
   const owner = req.user._id;
 
   if (!imdbID) {
-    throw new BadRequestError("Movie ID is required");
+    throw new BadRequestError(ID_BADREQUEST_MSG);
   }
   MovieItem.findOneAndUpdate(
     { imdbID, owner },
@@ -31,7 +35,7 @@ const saveMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("Invalid ID format"));
+        next(new BadRequestError(ID_BADREQUEST_MSG));
       } else {
         next(err);
       }
@@ -44,13 +48,15 @@ const unsaveMovie = (req, res, next) => {
   const userId = req.user._id;
 
   if (!imdbID) {
-    throw new BadRequestError("Movie ID is required");
+    throw new BadRequestError(ID_BADREQUEST_MSG);
   }
 
   MovieItem.findOne({ imdbID, owner: userId })
     .then((item) => {
       if (!item) {
-        throw new NotFoundError("Movie not found or not saved by this user");
+        throw new ForbiddenError(
+          FORBIDDEN_ERROR_MSG
+        );
       }
 
       return MovieItem.findOneAndDelete({ imdbID, owner: userId }).then(() =>
@@ -59,7 +65,7 @@ const unsaveMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("Invalid ID format"));
+        next(new BadRequestError(ID_BADREQUEST_MSG));
       } else {
         next(err);
       }
