@@ -13,7 +13,7 @@ const {
   SUCCESSFUL_REQUEST,
   CONTFLICT_ERROR_MSG,
   UNAUTHORIZED_ERROR_MSG,
-  NOTFOUND_ERROR_MSG
+  NOTFOUND_ERROR_MSG,
 } = require("../utils/constants");
 
 // create 3 controllers for getUser, createUser, and sign in
@@ -26,8 +26,10 @@ const createUser = (req, res, next) => {
   User.findOne({ email })
     .then(() => bcrypt.hash(password, 10))
     .then((hash) => User.create({ username, email, password: hash }))
-    .then(() =>
-      res.status(SUCCESSFUL_REQUEST).send(SUCCESSFUL_REQUEST_MSG)
+    .then((user) =>
+      res
+        .status(SUCCESSFUL_REQUEST)
+        .send({ username: user.username, email: user.email, _id: user._id })
     )
     .catch((err) => {
       if (err.name === "ValidationError") {

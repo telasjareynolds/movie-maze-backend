@@ -15,16 +15,17 @@ const { PORT = 3001 } = process.env;
 
 app.use(limiter);
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000", 
-      "https://movie-maze.twilightparadox.com",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://movie-maze.twilightparadox.com",
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
+app.use(cors());
 app.use(helmet());
 
 mongoose.set("strictQuery", false);
